@@ -1,0 +1,23 @@
+---
+- block:
+    - name: Create backend container
+      docker_container:
+        name: "{{ backend_container_name }}"
+        image:  "{{ backend_image }}"
+        state:  started
+        ports:  "{{ port_mapping }}"
+      networks:
+          - name: "{{ network_name }}"
+  tags:
+    - backend_container
+    - create
+
+- block:
+    - name: Destroy backend container
+      docker_container:
+        name: "{{ backend_container_name }}"
+        state: absent
+  tags:
+    - backend_container
+    - never
+    - destroy

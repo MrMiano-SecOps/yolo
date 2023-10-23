@@ -6,3 +6,13 @@
     - docker_bridge_network_ipv4
     - docker_volume
     - docker_db_container
+
+  post_tasks:
+    - name: Destroy Docker Volume
+      docker_volume:
+        name: "{{ volume_name }}"
+        state: absent
+      tags:
+        - docker_volume
+        - never
+        - destroy
