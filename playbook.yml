@@ -4,3 +4,5 @@
   roles:
     - install_docker_ubuntu
     - docker_bridge_network_ipv4
+    - docker_volume
+    - docker_db_container

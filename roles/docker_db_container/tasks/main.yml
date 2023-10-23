@@ -1,0 +1,27 @@
+---
+- block:
+    - name: Create db container
+      docker_container:
+        name: "{{ db_container_name }}"
+        image:  "{{ db_image }}"
+        state:  started
+        ports:  "{{ port_mapping }}"
+        mounts:
+          - type: volume
+            source: "{{ volume_name }}"
+            target: "{{ target_path }}"
+        networks:
+          - name: "{{ network_name }}"
+  tags:
+    - db_container
+    - create
+
+- block:
+    - name: Destroy db container
+      docker_container:
+        name: "{{ db_container_name }}"
+        state: absent
+  tags:
+    - db_container
+    - never
+    - destroy

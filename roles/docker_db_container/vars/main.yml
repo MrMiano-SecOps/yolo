@@ -1,0 +1,8 @@
+---
+db_container_name:  ecom-mongo
+db_image: mongo
+port_mapping:
+  - '27017:27017'
+volume_name:  ecom-mongo-data
+target_path:  /data/db
+network_name: ecom-net
