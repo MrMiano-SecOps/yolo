@@ -1,6 +1,8 @@
 # Overview
 This project involved the deployment of a containerized e-commerce application into a Vagrant VM using Ansible.
 
+Here is a visual illustration of the set-up:
+
 ![Diagram](E_comm_Architecture_Vagrant.png)
 
 # Requirements
@@ -30,7 +32,7 @@ Make sure that you have the following installed:
 ## How to destroy the application
  `ansible-playbook playbook.yml --tags destroy`
 
-## How to re-create the application completely
+## How to re-create the application
  `ansible-playbook playbook.yml --tags create`
 
 ## How to delete the entire virtual machine
