@@ -6,7 +6,7 @@
         image:  "{{ backend_image }}"
         state:  started
         ports:  "{{ port_mapping }}"
-      networks:
+        networks:
           - name: "{{ network_name }}"
   tags:
     - backend_container

@@ -6,6 +6,8 @@
     - docker_bridge_network_ipv4
     - docker_volume
     - docker_db_container
+    - docker_backend_container
+    - docker_frontend_container
 
   post_tasks:
     - name: Destroy Docker Volume

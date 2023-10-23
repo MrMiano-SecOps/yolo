@@ -1,0 +1,6 @@
+---
+frontend_container_name:  ecom-frontend
+frontend_image: mrmiano/ecom-client-image:v1.0.0
+port_mapping:
+  - '3000:3000'
+network_name: ecom-net

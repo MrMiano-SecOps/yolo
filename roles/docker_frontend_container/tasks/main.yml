@@ -1,0 +1,25 @@
+---
+- block:
+    - name: Create frontend container
+      docker_container:
+        name: "{{ frontend_container_name }}"
+        image:  "{{ frontend_image }}"
+        state:  started
+        tty: true
+        interactive: true
+        ports:  "{{ port_mapping }}"
+        networks:
+          - name: "{{ network_name }}"
+  tags:
+    - frontend_container
+    - create
+
+- block:
+    - name: Destroy frontend container
+      docker_container:
+        name: "{{ frontend_container_name }}"
+        state: absent
+  tags:
+    - frontend_container
+    - never
+    - destroy
