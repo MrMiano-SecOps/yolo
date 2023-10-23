@@ -5,4 +5,5 @@ port_mapping:
   - '27017:27017'
 volume_name:  ecom-mongo-data
 target_path:  /data/db
+mount_path: 'ecom-mongo-data:/data/db'
 network_name: ecom-net

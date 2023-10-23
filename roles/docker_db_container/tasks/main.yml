@@ -6,10 +6,7 @@
         image:  "{{ db_image }}"
         state:  started
         ports:  "{{ port_mapping }}"
-        mounts:
-          - type: volume
-            source: "{{ volume_name }}"
-            target: "{{ target_path }}"
+        volumes:  "{{ mount_path }}"
         networks:
           - name: "{{ network_name }}"
   tags:
