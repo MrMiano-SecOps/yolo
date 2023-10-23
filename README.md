@@ -1,56 +1,80 @@
 # Overview
-This project involved the containerization and deployment of an e-commerce application using Docker.
-Here's a visual illustration of the application architecture and how it can be deployed:
+This project involved the deployment of a containerized e-commerce application into a Vagrant VM using Ansible.
 
-![Diagram](E-Comm_Architecture.png)
-
-For a detailed guide on the steps taken to containerize the application, see the [PROCEDURE.md](https://github.com/MrMiano-DevOps/yolo/blob/master/PROCEDURE.md) file
+![Diagram](E_comm_Architecture_Vagrant.png)
 
 # Requirements
 Make sure that you have the following installed:
-- [Docker](https://docs.docker.com/engine/install/) 
+- [Vagrant](https://developer.hashicorp.com/vagrant/tutorials/getting-started/getting-started-install)
+- [Virtualbox](https://docs.oracle.com/en/virtualization/virtualbox/7.0/user/installation.html#installation)
+- [Ansible](https://docs.ansible.com/ansible/2.9/installation_guide/intro_installation.html)
 
 ## How to launch the application 
-### Method 1 (faster)
-- NOTE: This method does not require cloning of this repository
-
-- Navigate to the launch_app folder and copy the contents of the [docker-compose.yml](https://github.com/MrMiano-DevOps/yolo/blob/master/launch_app/docker-compose.yml) file
-
-- On your local machine, navigate to your desired directory and create
-  a docker-compose.yml file, paste the contents into it and save
-
-  `touch docker-compose.yml`
-
-- Launch the application using docker compose
-
-  `docker compose up`
 
 ### Method 2
-- NOTE: This method requires cloning of this entire repository
-
 - Clone this repository to your local machine
 
-  `git clone https://github.com/MrMiano-DevOps/yolo.git`
+  `git clone https://github.com/MrMiano-SecOps/yolo`
 
 - Navigate to the root directory of your cloned repository
 
   `cd yolo`
 
-- Launch the application using the docker compose command
+- Launch the vagrant virtual machine and the application
 
-  `docker compose up`
+  `vagrant up`
 
 ## Access the application on your browser using the following URL
  `http://localhost:3000/`
 
-## How to stop the application
-- Navigate back to your terminal and press "ctrl+c" 
+## How to destroy the application
+ `ansible-playbook playbook.yml --tags destroy`
 
-## How to remove the application completely
- `docker compose down`
+## How to re-create the application completely
+ `ansible-playbook playbook.yml --tags create`
 
-## The Docker images used in this application are sourced from this repository
+## How to delete the entire virtual machine
+ `vagrant destroy`
 
-https://hub.docker.com/repositories/mrmiano
+# Structure of the Playbook
+The [playbook.yml](https://github.com/MrMiano-SecOps/yolo/blob/master/playbook.yml) file
+has been divided into [roles](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html) containing specific [tasks](https://www.digitalocean.com/community/tutorials/how-to-define-tasks-in-ansible-playbooks) that fulfill the role.
 
-![Diagram](DockerHub_Screenshot.png)
+The roles have been designed for re-usability through the use of [variables](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html). The variables are defined in the /vars sub-folders of each role. This allows easier modification of the playbook to suit your desired environment.
+
+# Description of the playbook roles and tasks
+Since Ansible playbooks execute sequentially, the roles have been ordered to cater for this
+limitation.
+## install_docker_ubuntu
+- This role installs the required dependencies for running the application
+- Its primary goal is to install Docker into the virtual machine
+
+##  docker_bridge
+- This role creates a custom bridge network for the application's Docker containers.
+- The network lays the foundation for the containers to communicate.
+
+##  docker_volume
+- This role creates a docker volume to help persist data stored by the database container.
+
+##  docker_db_container
+- This role creates the mongodb database container and links it to the docker volume and
+  connects it to the docker network previously created.
+- An additional block has also been specified to facilitate deletion when specified.
+
+##  docker_backend_container
+- This role creates the nodejs backend container and connects it to the docker network
+  previously created.
+- An additional block has also been specified to facilitate deletion when specified using
+  the "never" and "destroy" tags.
+
+## docker_frontend_container
+- This role creates the react frontend container and connects it to the docker network
+  previously created.
+- An additional block has also been specified to facilitate deletion when specified using
+  the "never" and "destroy" tags.
+
+## post_task
+- This additional step is primarily for the purpose of deleting the docker volume when
+  required.
+- This has been done since Docker containers have to be deleted first before deleting their
+  respective containers.
