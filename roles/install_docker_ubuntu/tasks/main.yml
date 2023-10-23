@@ -1,0 +1,27 @@
+---
+- block:
+    - name: Install prerequisites
+      apt:
+        name: "{{ pre_requisites }}"
+    
+    - name: Add Docker's official GPG-Key
+      apt_key:
+        url: "{{ docker_gpg_url }}"
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "{{ docker_repo }}"
+
+    - name: Install Docker
+      apt:
+        name: "{{ docker_packages }}"
+        update_cache: yes 
+  tags:
+    - docker_setup
+
+
+- block:
+    - name: Add user permissions to Docker group
+      shell:  "usermod -aG docker {{ default_user_name }}"
+  tags:
+    - docker_permissions

@@ -1,0 +1,5 @@
+---
+network_name: ecom-net
+subnet_address: 10.3.0.0/28
+gateway_ip: 10.3.0.1
+ip_range: 10.3.0.0/28

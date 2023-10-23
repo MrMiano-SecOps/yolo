@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "geerlingguy/ubuntu2004"
+  config.vm.box = "bento/ubuntu-22.04"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -70,6 +70,6 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 3000, host: 3000
   # Provisioning configuration for Ansible.
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "playbook.yaml"
-    end
+  ansible.playbook = "playbook.yml"
+  end
 end

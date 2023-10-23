@@ -1,0 +1,6 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - install_docker_ubuntu
+    - docker_bridge_network_ipv4

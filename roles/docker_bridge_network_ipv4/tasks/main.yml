@@ -1,0 +1,26 @@
+---
+- block:
+    - name: Create Custom Bridge Network
+      docker_network:
+        name: "{{ network_name }}"
+        state:  present
+        attachable: true
+        ipam_config:
+          - subnet: "{{ subnet_address }}"
+            gateway:  "{{ gateway_ip }}"
+            iprange:  "{{ ip_range }}"
+  tags:
+    - docker_network
+    - create 
+
+
+- block:
+    - name: Destroy Custom Bridge Network
+      docker_network:
+        name: "{{ network_name }}"
+        state:  absent
+        force: true
+  tags:
+    - docker_network
+    - never
+    - destroy
